@@ -25,6 +25,10 @@ import { TransitionProps } from "@mui/material/transitions";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import AddIcon from "@mui/icons-material/Add";
 
+import UploadFilesForm from "./UploadFilesForm";
+import CollectionDetailsForm from "./CollectionDetailsForm";
+import ConfirmCollectionDetails from "./ConfrimCollectionDetails";
+
 //import { ArttributeAddress } from "../../../config.js";
 //import Arttribute from "../../../Arttribute.json";
 
@@ -37,7 +41,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const steps = ["Upload dataset", "Manage access", "Add details"];
+const steps = ["Upload files", "Add details", "Confirm details"];
 
 interface Props {
   minimized: boolean;
@@ -57,8 +61,8 @@ export default function CreateCollection(props: Props) {
   const [loading, setLoading] = React.useState(false);
 
   const [name, setName] = React.useState("");
-  const [file, setFile] = React.useState(null);
-  const [headline, setHeadline] = React.useState("");
+  const [files, setFiles] = React.useState<File[]>([]);
+  const [price, setPrice] = React.useState<number | null>(null);
   const [description, setDescription] = React.useState("");
   const [image, setImage] = React.useState(null);
 
@@ -87,19 +91,27 @@ export default function CreateCollection(props: Props) {
     setFinish(false);
   };
 
-  async function processImageFiles() {
-    let files = {
-      datasetFile: "",
-      metadataUrl: "",
-    };
-
-    if (!file || !image) {
-      console.log("File or image is missing");
-      return;
+  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    if (inputValue === "") {
+      setPrice(null);
+    } else {
+      const parsedNumber = parseFloat(inputValue);
+      if (!isNaN(parsedNumber)) {
+        setPrice(parsedNumber);
+      }
     }
-  }
+  };
 
-  async function CreateArtCollecion() {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const filesArray: File[] = Array.from(files);
+      setFiles(filesArray);
+    }
+  };
+
+  async function CreateArtCollection() {
     setLoading(true);
     //const web3Modal = new Web3Modal();
     //const connection = await web3Modal.connect();
@@ -201,9 +213,32 @@ export default function CreateCollection(props: Props) {
                 ))}
               </Stepper>
             </Box>
-            {activeStep === 1 ? <div>Hello world</div> : null}
-            {activeStep === 2 ? null : null}
-            {activeStep === 3 ? null : null}
+            {activeStep === 1 ? (
+              <UploadFilesForm
+                name={name}
+                setName={setName}
+                files={files}
+                handleFileChange={handleFileChange}
+              />
+            ) : null}
+            {activeStep === 2 ? (
+              <CollectionDetailsForm
+                price={price}
+                handlePriceChange={handlePriceChange}
+                description={description}
+                setDescription={setDescription}
+                image={image}
+                setImage={setImage}
+              />
+            ) : null}
+            {activeStep === 3 ? (
+              <ConfirmCollectionDetails
+                name={name}
+                price={price}
+                description={description}
+                totalFiles={files.length}
+              />
+            ) : null}
             <Grid container spacing={2}>
               <Grid item xs={activeStep === 1 ? 0 : 6}>
                 {activeStep !== 1 ? (
@@ -224,8 +259,8 @@ export default function CreateCollection(props: Props) {
                   variant="contained"
                   component="label"
                   sx={{ textTransform: "none", mt: 2 }}
-                  //onClick={finish ? CreateDataset : handleNext}
-                  disabled={!file || !name}
+                  onClick={finish ? CreateArtCollection : handleNext}
+                  disabled={files.length < 1 || !name}
                 >
                   {finish ? (
                     loading ? (

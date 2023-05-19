@@ -87,12 +87,12 @@ export default function CollectionDetails() {
                 <Grid item xs={8} lg={8}>
                   <Box sx={{ display: "flex", m: 1 }}>
                     <TollIcon sx={{ mr: 1 }} />
-                    <Typography variant="body1">Floor Price:</Typography>
+                    <Typography variant="body1">Collection Price:</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={4} lg={4}>
                   <Typography variant="body1" sx={{ fontWeight: 700, m: 1 }}>
-                    0.01
+                    0.01 +
                   </Typography>
                 </Grid>
               </Grid>
