@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Avatar,
@@ -14,7 +15,14 @@ import {
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 
 interface Props {
-  data: Object;
+  data: {
+    name: string;
+    totalAttributions: number;
+    totalArtworks: number;
+    price: number;
+    creator: string;
+    featuredImage: string;
+  };
 }
 
 export default function ArtCollectionCard(props: Props) {
@@ -27,7 +35,7 @@ export default function ArtCollectionCard(props: Props) {
     router.push(`/collections/${"slug"}`);
   };
   return (
-    <Grid item xs={12} lg={3}>
+    <Grid item xs={6} lg={3}>
       <Card
         elevation={0}
         sx={{
@@ -38,11 +46,20 @@ export default function ArtCollectionCard(props: Props) {
         }}
       >
         <CardActionArea onClick={handleClick}>
-          <Box sx={{ height: 200, backgroundColor: "#c5cae9" }} />
+          {data.featuredImage ? (
+            <CardMedia
+              component="img"
+              height="200"
+              image={data.featuredImage}
+              alt={data.name}
+            />
+          ) : (
+            <Box sx={{ height: 200, backgroundColor: "#c5cae9" }} />
+          )}
         </CardActionArea>
         <CardContent sx={{ m: 0.5 }}>
           <Typography variant="body1" component="div" gutterBottom noWrap>
-            Artwork Name
+            {data.name}
           </Typography>
           <Grid container>
             <Grid item xs={7}>
@@ -68,7 +85,7 @@ export default function ArtCollectionCard(props: Props) {
                   noWrap
                   sx={{ m: 0.5 }}
                 >
-                  1000
+                  {data.totalAttributions}
                 </Typography>
               </Box>
             </Grid>

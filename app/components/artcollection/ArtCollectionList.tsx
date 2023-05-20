@@ -2,15 +2,15 @@ import { Grid } from "@mui/material";
 import ArtCollectionCard from "./ArtCollectionCard";
 
 interface Props {
-  artworks: any[];
+  collections: any[];
 }
 
 export default function ArtCollectionList(props: Props) {
-  const { artworks } = props;
+  const { collections } = props;
   return (
     <Grid container spacing={1}>
-      {artworks.map((artwork, i) => (
-        <ArtCollectionCard data={artwork} key={i} />
+      {collections && collections.map((collection, i) => (
+        <ArtCollectionCard data={collection} key={i} />
       ))}
     </Grid>
   );

@@ -1,11 +1,69 @@
 "use client";
-import { useEffect } from "react";
+import axios from "axios";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import AppNavBar from "./components/layout/AppNavBar";
 import { DrawerHeader } from "./components/layout/DrawerHeader";
 import ArtCollectionList from "./components/artcollection/ArtCollectionList";
 
+import { ArttributeAddress } from "../config.js";
+import ArtAttribution from "../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+
 export default function Dashboard() {
+  const [collections, setCollections] = useState<any>([]);
+  const [loadingState, setLoadingState] = useState("not-loaded");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    loadCollections();
+  }, []);
+
+  async function loadCollections() {
+    setLoading(true);
+    /* create a generic provider and query new items */
+    const provider = new ethers.providers.JsonRpcProvider();
+    //"https://api.hyperspace.node.glif.io/rpc/v1"
+    const contract = new ethers.Contract(
+      ArttributeAddress,
+      ArtAttribution.abi,
+      provider
+    );
+    const data = await contract.fetchAllCollections();
+
+    /*  map over items returned from smart contract and format then */
+    //uint256 collectionId;
+    //address creator;
+    //uint256 price;
+    //string collectionUri;
+    //uint256 totalAttributions;
+    //uint256 totalRewards;
+    //bool exists;
+
+    const artcollections: any[] = await Promise.all(
+      data.map(async (i: any) => {
+        const meta = await axios.get(i.collectionUri);
+        console.log("metadata", meta);
+        let artcollection = {
+          id: i.collectionId.toNumber(),
+          name: meta.data.name,
+          creator: i.creator,
+          metadata: i.collectionUri,
+          price: i.price.toNumber(),
+          collectionFilesUri: meta.data.files,
+          description: meta.data.description,
+          featuredImage: meta.data.featuredImage,
+          totalAttributions: i.totalAttributions.toNumber(),
+          totalRewards: i.totalRewards.toNumber(),
+        };
+        return artcollection;
+      })
+    );
+    setCollections(artcollections);
+    artcollections.sort((a, b) => b.id - a.id);
+    setLoading(false);
+    setLoadingState("loaded");
+  }
+  console.log("collections", collections);
   return (
     <Box sx={{ display: "flex" }}>
       <AppNavBar />
@@ -35,7 +93,7 @@ export default function Dashboard() {
             </Typography>
           </Grid>
         </Box>
-        <ArtCollectionList artworks={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]} />
+        <ArtCollectionList collections={collections} />
       </Box>
     </Box>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useRouter } from "next/router";
-//import { ethers } from "ethers";
-//import Web3Modal from "web3modal";
-//import { Web3Storage } from "web3.storage";
+import { useRouter } from "next/navigation";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import { Web3Storage } from "web3.storage";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -29,8 +29,8 @@ import UploadFilesForm from "./UploadFilesForm";
 import CollectionDetailsForm from "./CollectionDetailsForm";
 import ConfirmCollectionDetails from "./ConfrimCollectionDetails";
 
-//import { ArttributeAddress } from "../../../config.js";
-//import Arttribute from "../../../Arttribute.json";
+import { ArttributeAddress } from "../../../config.js";
+import ArtAttribution from "../../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -49,10 +49,11 @@ interface Props {
 
 export default function CreateCollection(props: Props) {
   const { minimized } = props;
-  //const router = useRouter();
-  //const storageToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDg2YWIyOTRhMTQ1RThENkU0ZDFCNmNlRTcwODAxZGNDMTkyOWQ5NzkiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Nzc5Mzg1Mjg3MTQsIm5hbWUiOiJGb2xpb2hvdXNlIn0.2mttZrpJ6UBXcJwqr28iUb1rV8cqR5Y0MuxhZp-h9n4";
+  const router = useRouter();
+  const storageToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDg2YWIyOTRhMTQ1RThENkU0ZDFCNmNlRTcwODAxZGNDMTkyOWQ5NzkiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Nzc5Mzg1Mjg3MTQsIm5hbWUiOiJGb2xpb2hvdXNlIn0.2mttZrpJ6UBXcJwqr28iUb1rV8cqR5Y0MuxhZp-h9n4";
 
-  //const storage = new Web3Storage({ token: storageToken });
+  const storage = new Web3Storage({ token: storageToken });
 
   const [open, setOpen] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(1);
@@ -62,7 +63,7 @@ export default function CreateCollection(props: Props) {
 
   const [name, setName] = React.useState("");
   const [files, setFiles] = React.useState<File[]>([]);
-  const [price, setPrice] = React.useState<number | null>(null);
+  const [price, setPrice] = React.useState<number>(0);
   const [description, setDescription] = React.useState("");
   const [image, setImage] = React.useState(null);
 
@@ -94,7 +95,7 @@ export default function CreateCollection(props: Props) {
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     if (inputValue === "") {
-      setPrice(null);
+      setPrice(NaN);
     } else {
       const parsedNumber = parseFloat(inputValue);
       if (!isNaN(parsedNumber)) {
@@ -113,32 +114,40 @@ export default function CreateCollection(props: Props) {
 
   async function CreateArtCollection() {
     setLoading(true);
-    //const web3Modal = new Web3Modal();
-    //const connection = await web3Modal.connect();
-    //const provider = new ethers.providers.Web3Provider(connection);
-    //const signer = provider.getSigner();
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
 
-    //const datasetFile = fileurl
-    //const metadataUrl = fielurl
-
-    //let contract = new ethers.Contract(
-    //  FoliohouseAddress,
-    //  Foliohouse.abi,
-    //  signer
-    //);
-
-    //let creationAction = await contract.createDataset(
-    //  124,
-    //  name,
-    //  datasetFile,
-    //  metadataUrl,
-    //  isPrivate
-    //);
-
-    //await creationAction.wait();
-    //setLoading(false);
-    //router.reload();
-    //handleClose();
+    let contract = new ethers.Contract(
+      ArttributeAddress,
+      ArtAttribution.abi,
+      signer
+    );
+    try {
+      const storedFiles = await storage.put(files);
+      const imageFile = new File([image], "featured-image");
+      const storedImage = await storage.put([imageFile]);
+      const imageUrl = `https://${storedImage.toString()}.ipfs.dweb.link/featured-image`;
+      const metadata = JSON.stringify({
+        name: name,
+        price: price,
+        description: description,
+        featuredImage: imageUrl,
+        files: storedFiles,
+      });
+      const datablob = new Blob([metadata], { type: "application/json" });
+      const metadataFile = new File([datablob], "metadata.json");
+      const resData = await storage.put([metadataFile]);
+      const metadataUrl = `https://${resData.toString()}.ipfs.dweb.link/metadata.json`;
+      let creationAction = await contract.createCollection(price, metadataUrl);
+      await creationAction.wait();
+      setLoading(false);
+      router.push("/collections/owned");
+      handleClose();
+    } catch (error) {
+      console.log("Error uploading content: ", error);
+    }
   }
 
   return (
