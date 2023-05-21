@@ -1,5 +1,4 @@
 import * as React from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Avatar,
@@ -32,7 +31,9 @@ export default function ArtCollectionCard(props: Props) {
   console.log(data);
   const handleClick = (e: any) => {
     e.preventDefault();
-    router.push(`/collections/${"slug"}`);
+    router.push(
+      `/collections/${data.name.toLowerCase()}-arttcollection-${data.id}`
+    );
   };
   return (
     <Grid item xs={6} lg={3}>

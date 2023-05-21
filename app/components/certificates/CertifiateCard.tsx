@@ -5,7 +5,6 @@ import {
   Box,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   Typography,
   CardActionArea,
@@ -15,13 +14,23 @@ import SummarizeOutlinedIcon from "@mui/icons-material/SummarizeOutlined";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 
 interface Props {
-  data: Object;
+  data: {
+    id: number;
+    ownerAddress: string;
+    name: string;
+    metadata: string;
+    collectionId: number;
+    collectionName: string;
+    featuredImage: string;
+    contribution: number;
+  };
 }
 
 export default function CertificateCard(props: Props) {
   const router = useRouter();
 
   const { data } = props;
+
   console.log(data);
   const handleClick = (e: any) => {
     e.preventDefault();
@@ -50,8 +59,10 @@ export default function CertificateCard(props: Props) {
                     backgroundColor: "#c5cae9",
                     borderRadius: 4,
                   }}
+                  alt={data.collectionName}
+                  src={data.featuredImage ? data.featuredImage : ""}
                 >
-                  <SummarizeOutlinedIcon />
+                  {!data.featuredImage ? <SummarizeOutlinedIcon /> : null}
                 </Avatar>
                 <BeenhereIcon
                   sx={{
@@ -66,7 +77,7 @@ export default function CertificateCard(props: Props) {
 
               <Box sx={{ display: "block", m: 1 }}>
                 <Typography variant="body1" component="div" gutterBottom noWrap>
-                  Artwork Name
+                  {data.collectionName}
                 </Typography>
                 <Box sx={{ display: "flex" }}>
                   <Avatar sx={{ width: 24, height: 24 }} />

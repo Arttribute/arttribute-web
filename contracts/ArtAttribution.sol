@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract ArtAttribution {
+    
     using Counters for Counters.Counter;
 
     struct Member{
@@ -40,14 +41,14 @@ contract ArtAttribution {
     Counters.Counter private collectionIdCounter;
     Counters.Counter private certificateIdCounter;
 
-    address creator;
-
+    IERC20 public token;
+    
     event NewMember(uint256 indexed memberId,address memberAddress, string dataUri);
     event CollectionCreated(uint256 collectionId, address indexed creator, uint256 price, string collectionUri, uint256 totalAttributions, uint256 totalRewards);
     event ArtworkAttributed(uint256 certificateId, address indexed owner, uint256 collectionId, string certificateUri);
 
-    constructor() public {
-       creator = msg.sender;
+    constructor(address _tokenAddress) {
+        token = IERC20(_tokenAddress);
     }
 
     function addMember(string memory dataUri)public returns (uint) {
@@ -70,7 +71,8 @@ contract ArtAttribution {
         require(artCollections[_collectionId].exists, "Collection does not exist");
         ArtCollection storage collection = artCollections[_collectionId-1];
         require(contribution >= collection.price, "Insufficient contribution");
-        payable(collection.creator).transfer(msg.value);
+        token.transferFrom(msg.sender, address(this), contribution);
+        payable(collection.creator).transfer(contribution);
         
         collection.totalAttributions += 1;
         collection.totalRewards += contribution;

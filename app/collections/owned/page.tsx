@@ -39,14 +39,6 @@ export default function OwnedCollections() {
     const data = await contract.getOwnedCollections(address);
 
     /*  map over items returned from smart contract and format then */
-    //uint256 collectionId;
-    //address creator;
-    //uint256 price;
-    //string collectionUri;
-    //uint256 totalAttributions;
-    //uint256 totalRewards;
-    //bool exists;
-
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
         const meta = await axios.get(i.collectionUri);

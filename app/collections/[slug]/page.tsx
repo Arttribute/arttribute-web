@@ -1,6 +1,15 @@
 "use client";
-import { useEffect } from "react";
-import { Box, Grid, ImageList, ImageListItem, Typography } from "@mui/material";
+import axios from "axios";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import {
+  Box,
+  CardMedia,
+  Grid,
+  ImageList,
+  ImageListItem,
+  Typography,
+} from "@mui/material";
 import AppNavBar from "../../components/layout/AppNavBar";
 import { DrawerHeader } from "../../components/layout/DrawerHeader";
 
@@ -11,6 +20,9 @@ import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import AutoAwesomeMotionOutlinedIcon from "@mui/icons-material/AutoAwesomeMotionOutlined";
 
 import AttributeArt from "@/app/components/artcollection/AttributeArt";
+
+import { ArttributeAddress } from "../../../config.js";
+import ArtAttribution from "../../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
 
 const itemData = [
   {
@@ -62,7 +74,53 @@ const itemData = [
     title: "Bike",
   },
 ];
-export default function CollectionDetails() {
+export default function CollectionDetails({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const { slug } = params;
+  console.log("slug: ", slug);
+  const id = parseInt(slug.toString().split("-arttcollection-")[1]);
+  console.log("id: ", id);
+
+  const [collection, setCollection] = useState<any>({});
+  const [loadingState, setLoadingState] = useState("not-loaded");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    loadCollection();
+  }, []);
+
+  async function loadCollection() {
+    setLoading(true);
+    /* create a generic provider and query new items */
+    const provider = new ethers.providers.JsonRpcProvider();
+    //"https://api.hyperspace.node.glif.io/rpc/v1"
+    const contract = new ethers.Contract(
+      ArttributeAddress,
+      ArtAttribution.abi,
+      provider
+    );
+    const data = await contract.getCollectionById(1);
+    console.log(data);
+
+    const meta = await axios.get(data.collectionUri);
+    let collectionDetails = {
+      id: data.collectionId.toNumber(),
+      name: meta.data.name,
+      creator: data.creator,
+      metadata: data.collectionUri,
+      price: data.price.toNumber(),
+      collectionFilesUri: meta.data.files,
+      description: meta.data.description,
+      featuredImage: meta.data.featuredImage,
+      totalAttributions: data.totalAttributions.toNumber(),
+      totalRewards: data.totalRewards.toNumber(),
+    };
+    setCollection(collectionDetails);
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppNavBar />
@@ -70,9 +128,23 @@ export default function CollectionDetails() {
         <DrawerHeader />
         <Grid container spacing={2} sx={{ m: 1 }}>
           <Grid item xs={12} md={3}>
-            <Box
-              sx={{ height: 300, backgroundColor: "#c5cae9", borderRadius: 6 }}
-            />
+            {collection.featuredImage ? (
+              <CardMedia
+                component="img"
+                height="300"
+                image={collection.featuredImage}
+                alt={collection.name}
+                sx={{ borderRadius: 6 }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  height: 300,
+                  backgroundColor: "#c5cae9",
+                  borderRadius: 6,
+                }}
+              />
+            )}
             <Box
               sx={{
                 width: "100%",
@@ -92,7 +164,7 @@ export default function CollectionDetails() {
                 </Grid>
                 <Grid item xs={4} lg={4}>
                   <Typography variant="body1" sx={{ fontWeight: 700, m: 1 }}>
-                    0.01 +
+                    {collection.price} +
                   </Typography>
                 </Grid>
               </Grid>
@@ -106,7 +178,7 @@ export default function CollectionDetails() {
                 </Grid>
                 <Grid item xs={4} lg={4}>
                   <Typography variant="body1" sx={{ fontWeight: 700, m: 1 }}>
-                    100
+                    {collection.totalAttributions}
                   </Typography>
                 </Grid>
               </Grid>
@@ -126,19 +198,22 @@ export default function CollectionDetails() {
               </Grid>
 
               <Box sx={{ mt: 3, m: 1 }}>
-                <AttributeArt />
+                <AttributeArt
+                  id={id}
+                  price={collection.price}
+                  collectionName={collection.name}
+                  featuredImage={collection.featuredImage}
+                />
               </Box>
             </Box>
           </Grid>
           <Grid item xs={12} md={9}>
             <Box sx={{ m: 1 }}>
               <Typography variant="h4" sx={{ m: 1, fontWeight: 700 }}>
-                Collection Name
+                {collection.name}
               </Typography>
               <Typography variant="body1" sx={{ m: 1 }}>
-                Collection Description. Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit. Nullam euismod, nisl eget aliquam ultricies,
-                nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl.
+                {collection.description}
               </Typography>
             </Box>
 
