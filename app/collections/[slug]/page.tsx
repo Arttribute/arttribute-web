@@ -102,10 +102,14 @@ export default function CollectionDetails({
       ArtAttribution.abi,
       provider
     );
-    const data = await contract.getCollectionById(1);
+    const data = await contract.getCollectionById(id);
     console.log(data);
 
     const meta = await axios.get(data.collectionUri);
+    let rewards = ethers.utils.formatUnits(
+      data.totalRewards.toString(),
+      "ether"
+    );
     let collectionDetails = {
       id: data.collectionId.toNumber(),
       name: meta.data.name,
@@ -116,7 +120,7 @@ export default function CollectionDetails({
       description: meta.data.description,
       featuredImage: meta.data.featuredImage,
       totalAttributions: data.totalAttributions.toNumber(),
-      totalRewards: data.totalRewards.toNumber(),
+      totalRewards: rewards,
     };
     setCollection(collectionDetails);
   }

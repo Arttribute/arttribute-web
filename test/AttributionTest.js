@@ -3,37 +3,13 @@ const { ethers } = require("hardhat");
 
 describe("ArtAttribution", function () {
   it("Rewards artists when their artwork is used to train generative models", async function () {
-    //Deploying token contract
-    const ArtToken = await ethers.getContractFactory("ArtToken");
-    const artTokenContract = await ArtToken.deploy();
-    await artTokenContract.deployed();
-    const artTokenAddress = artTokenContract.address;
-
     //Deploying ArtAttribution contract
     const ArtAttribution = await ethers.getContractFactory("ArtAttribution");
-    const artAttributionContract = await ArtAttribution.deploy(artTokenAddress);
+    const artAttributionContract = await ArtAttribution.deploy();
     await artAttributionContract.deployed();
 
     const [_, firstMemberAddress, secondMemberAddress, thirdMemberAddress] =
       await ethers.getSigners();
-
-    // Adding funds to firstMemberAddress
-    await ethers.provider.sendTransaction({
-      to: firstMemberAddress.address,
-      value: ethers.utils.parseEther("100").toHexString(), // Specify the amount of ether to send
-    });
-
-    // Adding funds to secondMemberAddress
-    await ethers.provider.sendTransaction({
-      to: secondMemberAddress.address,
-      value: ethers.utils.parseEther("100").toHexString(), // Specify the amount of ether to send
-    });
-
-    // Adding funds to thirdMemberAddress
-    await ethers.provider.sendTransaction({
-      to: thirdMemberAddress.address,
-      value: ethers.utils.parseEther("100").toHexString(), // Specify the amount of ether to send
-    });
 
     //Add members
     await artAttributionContract.connect(firstMemberAddress).addMember("URI_1");
@@ -58,7 +34,15 @@ describe("ArtAttribution", function () {
     //Attributing a collection
     await artAttributionContract
       .connect(thirdMemberAddress)
-      .attributeCollection(1, 4, "certificate_uri");
+      .attributeCollection(1, "certificate_uri", {
+        value: ethers.utils.parseUnits("4", "ether"),
+      });
+
+    await artAttributionContract
+      .connect(thirdMemberAddress)
+      .attributeCollection(1, "certificate_uri", {
+        value: ethers.utils.parseUnits("2", "ether"),
+      });
 
     //Invalid attribution request
     //await artAttributionContract

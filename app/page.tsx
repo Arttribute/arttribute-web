@@ -31,10 +31,14 @@ export default function Dashboard() {
     const data = await contract.fetchAllCollections();
 
     /*  map over items returned from smart contract and format then */
-    
+
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
         const meta = await axios.get(i.collectionUri);
+        let rewards = ethers.utils.formatUnits(
+          i.totalRewards.toString(),
+          "ether"
+        );
         console.log("metadata", meta);
         let artcollection = {
           id: i.collectionId.toNumber(),
@@ -46,7 +50,7 @@ export default function Dashboard() {
           description: meta.data.description,
           featuredImage: meta.data.featuredImage,
           totalAttributions: i.totalAttributions.toNumber(),
-          totalRewards: i.totalRewards.toNumber(),
+          totalRewards: rewards,
         };
         return artcollection;
       })

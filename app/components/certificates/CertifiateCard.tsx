@@ -34,7 +34,11 @@ export default function CertificateCard(props: Props) {
   console.log(data);
   const handleClick = (e: any) => {
     e.preventDefault();
-    router.push(`/certificates/${"id"}`);
+    router.push(
+      `/certificates/${data.collectionName.toLowerCase()}-arttcertificate-${
+        data.id
+      }`
+    );
   };
   return (
     <Grid item xs={12} lg={12}>

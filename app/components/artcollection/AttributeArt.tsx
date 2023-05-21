@@ -83,8 +83,8 @@ export default function AttributeArt(props: Props) {
       const metadataUrl = `https://${resData.toString()}.ipfs.dweb.link/metadata.json`;
       let attributionAction = await contract.attributeCollection(
         id,
-        priceToPay,
-        metadataUrl
+        metadataUrl,
+        { value: ethers.utils.parseEther(priceToPay.toString()) }
       );
       await attributionAction.wait();
       setLoading(false);

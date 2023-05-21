@@ -41,11 +41,11 @@ export default function OwnedCollections() {
         const meta = await axios.get(i.certificateUri);
         console.log("metadata", meta);
         let ownedCertificate = {
-          id: i.collectionId.toNumber(),
+          id: i.certificateId.toNumber(),
           ownerAddress: i.owner,
-          name: meta.data.name,
+          name: meta.data.ownerName,
           metadata: i.certificateUri,
-          collectionId: i.certificateId,
+          collectionId: i.collectionId.toNumber(),
           collectionName: meta.data.collectionName,
           featuredImage: meta.data.featuredImage,
           contribution: meta.data.contribution,

@@ -1,14 +1,8 @@
 const hre = require("hardhat");
 
 async function main() {
-  const ArtToken = await hre.ethers.getContractFactory("ArtToken");
-  const artTokenContract = await ArtToken.deploy();
-  await artTokenContract.deployed();
-  const artTokenAddress = artTokenContract.address;
-  console.log("ArtToken contract deployed to:", artTokenAddress);
-
   const ArtAttribution = await hre.ethers.getContractFactory("ArtAttribution");
-  const contract = await ArtAttribution.deploy(artTokenAddress);
+  const contract = await ArtAttribution.deploy();
   await contract.deployed();
   console.log("ArtAttribution contract deployed to:", contract.address);
 }

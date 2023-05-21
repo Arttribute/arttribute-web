@@ -42,6 +42,10 @@ export default function OwnedCollections() {
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
         const meta = await axios.get(i.collectionUri);
+        let rewards = ethers.utils.formatUnits(
+          i.totalRewards.toString(),
+          "ether"
+        );
         console.log("metadata", meta);
         let artcollection = {
           id: i.collectionId.toNumber(),
@@ -53,7 +57,7 @@ export default function OwnedCollections() {
           description: meta.data.description,
           featuredImage: meta.data.featuredImage,
           totalAttributions: i.totalAttributions.toNumber(),
-          totalRewards: i.totalRewards.toNumber(),
+          totalRewards: rewards,
         };
         return artcollection;
       })

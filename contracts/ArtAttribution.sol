@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract ArtAttribution {
+contract ArtAttribution is ERC721URIStorage{
     
     using Counters for Counters.Counter;
 
@@ -17,7 +17,7 @@ contract ArtAttribution {
 
     struct ArtCollection {
         uint256 collectionId;
-        address creator;
+        address payable creator;
         uint256 price;
         string collectionUri;
         uint256 totalAttributions;
@@ -41,14 +41,14 @@ contract ArtAttribution {
     Counters.Counter private collectionIdCounter;
     Counters.Counter private certificateIdCounter;
 
-    IERC20 public token;
+    address payable contract_creator;
     
     event NewMember(uint256 indexed memberId,address memberAddress, string dataUri);
     event CollectionCreated(uint256 collectionId, address indexed creator, uint256 price, string collectionUri, uint256 totalAttributions, uint256 totalRewards);
     event ArtworkAttributed(uint256 certificateId, address indexed owner, uint256 collectionId, string certificateUri);
 
-    constructor(address _tokenAddress) {
-        token = IERC20(_tokenAddress);
+    constructor() ERC721("Art Attribution Token", "ATTR") {
+      contract_creator = payable(msg.sender);
     }
 
     function addMember(string memory dataUri)public returns (uint) {
@@ -62,24 +62,25 @@ contract ArtAttribution {
     function createCollection(uint256 _price, string memory collectionUri) external {
         collectionIdCounter.increment();
         uint256 collectionId = collectionIdCounter.current();
-        artCollections.push(ArtCollection(collectionId, msg.sender, _price, collectionUri, 0, 0, true));
+        artCollections.push(ArtCollection(collectionId, payable(msg.sender), _price, collectionUri, 0, 0, true));
 
         emit CollectionCreated(collectionId, msg.sender, _price, collectionUri, 0, 0);
     }
 
-    function attributeCollection(uint256 _collectionId, uint256 contribution, string memory certificateUri) public payable {
+    function attributeCollection(uint256 _collectionId,string memory certificateUri) public payable {
         require(artCollections[_collectionId].exists, "Collection does not exist");
         ArtCollection storage collection = artCollections[_collectionId-1];
-        require(contribution >= collection.price, "Insufficient contribution");
-        token.transferFrom(msg.sender, address(this), contribution);
-        payable(collection.creator).transfer(contribution);
+        require(msg.value >= collection.price, "Insufficient contribution");
         
+
         collection.totalAttributions += 1;
-        collection.totalRewards += contribution;
+        collection.totalRewards += msg.value;
         certificateIdCounter.increment();
         uint256 certificateId = certificateIdCounter.current();
+         _mint(msg.sender,certificateId);
+        _setTokenURI(certificateId, certificateUri);
         attributionCertificates.push(AttributionCertificate(certificateId, msg.sender, _collectionId, certificateUri, true));
-
+        payable(collection.creator).transfer(msg.value);
         emit ArtworkAttributed(certificateId, msg.sender, _collectionId, certificateUri);
     }
 
@@ -109,17 +110,17 @@ contract ArtAttribution {
     }
 
     function getMemberById(uint id) public view returns (Member memory) {
-        require(id < members.length, "Invalid member ID");
+       
         return members[id-1];
     }
 
     function getCollectionById(uint id) public view returns (ArtCollection memory) {
-         require(id < artCollections.length, "Invalid collection ID");
+        
         return artCollections[id-1];
     }
 
     function getCertificateById(uint id) public view returns (AttributionCertificate memory) {
-        require(id < attributionCertificates.length, "Invalid certificate ID");
+        
         return attributionCertificates[id-1];
     }
 
