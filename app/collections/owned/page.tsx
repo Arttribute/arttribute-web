@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, LinearProgress, Typography } from "@mui/material";
 import AppNavBar from "../../components/layout/AppNavBar";
 import { DrawerHeader } from "../../components/layout/DrawerHeader";
 import ArtCollectionList from "../../components/artcollection/ArtCollectionList";
@@ -102,7 +102,13 @@ export default function OwnedCollections() {
           />
         </Grid>
         <Divider sx={{ m: 3 }} />
+        {loading ? <LinearProgress sx={{ ml: 2, mr: 2 }} /> : null}
         <ArtCollectionList collections={collections} />
+        {loadingState === "loaded" && !collections.length ? (
+          <Box sx={{ m: 3 }}>
+            <Typography variant="h6">No collections yet</Typography>
+          </Box>
+        ) : null}
       </Box>
     </Box>
   );

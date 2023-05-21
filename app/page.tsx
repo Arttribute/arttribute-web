@@ -2,7 +2,7 @@
 import axios from "axios";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, LinearProgress } from "@mui/material";
 import AppNavBar from "./components/layout/AppNavBar";
 import { DrawerHeader } from "./components/layout/DrawerHeader";
 import ArtCollectionList from "./components/artcollection/ArtCollectionList";
@@ -31,14 +31,7 @@ export default function Dashboard() {
     const data = await contract.fetchAllCollections();
 
     /*  map over items returned from smart contract and format then */
-    //uint256 collectionId;
-    //address creator;
-    //uint256 price;
-    //string collectionUri;
-    //uint256 totalAttributions;
-    //uint256 totalRewards;
-    //bool exists;
-
+    
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
         const meta = await axios.get(i.collectionUri);
@@ -93,7 +86,13 @@ export default function Dashboard() {
             </Typography>
           </Grid>
         </Box>
+        {loading ? <LinearProgress sx={{ ml: 2, mr: 2 }} /> : null}
         <ArtCollectionList collections={collections} />
+        {loadingState === "loaded" && !collections.length ? (
+          <Box sx={{ m: 3 }}>
+            <Typography variant="h6">No collections yet</Typography>
+          </Box>
+        ) : null}
       </Box>
     </Box>
   );
