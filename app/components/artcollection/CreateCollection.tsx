@@ -30,7 +30,7 @@ import CollectionDetailsForm from "./CollectionDetailsForm";
 import ConfirmCollectionDetails from "./ConfrimCollectionDetails";
 
 import { ArttributeAddress } from "../../../config.js";
-import ArtAttribution from "../../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+import ArtAttribution from "../../../ArtAttribution.json";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

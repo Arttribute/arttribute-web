@@ -16,7 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 
 import { ArttributeAddress } from "../../../config.js";
-import ArtAttribution from "../../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+import ArtAttribution from "../../../ArtAttribution.json";
 
 interface Props {
   id: number;

@@ -22,7 +22,7 @@ import AutoAwesomeMotionOutlinedIcon from "@mui/icons-material/AutoAwesomeMotion
 import AttributeArt from "@/app/components/artcollection/AttributeArt";
 
 import { ArttributeAddress } from "../../../config.js";
-import ArtAttribution from "../../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+import ArtAttribution from "../../../ArtAttribution.json";
 
 export default function CollectionDetails({
   params,

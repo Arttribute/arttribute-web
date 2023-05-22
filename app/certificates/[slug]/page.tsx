@@ -11,7 +11,7 @@ import BeenhereIcon from "@mui/icons-material/Beenhere";
 import TollIcon from "@mui/icons-material/Toll";
 
 import { ArttributeAddress } from "../../../config.js";
-import ArtAttribution from "../../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+import ArtAttribution from "../../../ArtAttribution.json";
 
 export default function CertificateDetails({
   params,

@@ -13,7 +13,7 @@ import FilterNoneOutlinedIcon from "@mui/icons-material/FilterNoneOutlined";
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 
 import { ArttributeAddress } from "../../../config.js";
-import ArtAttribution from "../../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+import ArtAttribution from "../../../ArtAttribution.json";
 
 export default function OwnedCollections() {
   const [collections, setCollections] = useState<any>([]);

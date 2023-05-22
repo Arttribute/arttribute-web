@@ -8,7 +8,7 @@ import { DrawerHeader } from "./components/layout/DrawerHeader";
 import ArtCollectionList from "./components/artcollection/ArtCollectionList";
 
 import { ArttributeAddress } from "../config.js";
-import ArtAttribution from "../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+import ArtAttribution from "../ArtAttribution.json";
 
 export default function Dashboard() {
   const [collections, setCollections] = useState<any>([]);

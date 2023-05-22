@@ -10,7 +10,7 @@ import CertificateList from "../components/certificates/CertificateList";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import { ArttributeAddress } from "../../config.js";
-import ArtAttribution from "../../artifacts/contracts/ArtAttribution.sol/ArtAttribution.json";
+import ArtAttribution from "../../ArtAttribution.json";
 
 export default function OwnedCollections() {
   const [certificates, setCertificates] = useState<any>([]);
