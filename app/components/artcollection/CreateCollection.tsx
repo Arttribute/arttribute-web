@@ -125,7 +125,16 @@ export default function CreateCollection(props: Props) {
       signer
     );
     try {
-      const storedFiles = await storage.put(files);
+      let storedFiles = [];
+      for (let i = 0; i < files.length; i++) {
+        const imagefile = files[i];
+        const storedFile = await storage.put([imagefile]);
+        const fileUrl = `https://${storedFile.toString()}.ipfs.dweb.link/${
+          imagefile.name
+        }`;
+        storedFiles.push(fileUrl);
+      }
+
       const imageFile = new File([image], "featured-image");
       const storedImage = await storage.put([imageFile]);
       const imageUrl = `https://${storedImage.toString()}.ipfs.dweb.link/featured-image`;

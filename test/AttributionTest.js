@@ -56,6 +56,7 @@ describe("ArtAttribution", function () {
     let allcertificates = await artAttributionContract.fetchAllCertificates();
     let allcollection = await artAttributionContract.fetchAllCollections();
     let collectionbyId = await artAttributionContract.getCollectionById(1);
+    let collectionbyId3 = await artAttributionContract.getCollectionById(3);
     let ownedCollections = await artAttributionContract.getOwnedCollections(
       "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"
     );
@@ -71,6 +72,7 @@ describe("ArtAttribution", function () {
     console.log("all certificates : ", allcertificates);
     console.log("all collection : ", allcollection);
     console.log("collection by id : ", collectionbyId);
+    console.log("collection by id  3: ", collectionbyId3);
     console.log("owned collections : ", ownedCollections);
     console.log("owned certificates : ", ownedCertificates);
     console.log("member by id : ", memmberbyId);
