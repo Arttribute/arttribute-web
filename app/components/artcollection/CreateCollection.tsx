@@ -129,9 +129,10 @@ export default function CreateCollection(props: Props) {
       const imageFile = new File([image], "featured-image");
       const storedImage = await storage.put([imageFile]);
       const imageUrl = `https://${storedImage.toString()}.ipfs.dweb.link/featured-image`;
+      const priceToString = price.toString();
       const metadata = JSON.stringify({
         name: name,
-        price: price,
+        price: priceToString,
         description: description,
         featuredImage: imageUrl,
         files: storedFiles,
@@ -140,7 +141,7 @@ export default function CreateCollection(props: Props) {
       const metadataFile = new File([datablob], "metadata.json");
       const resData = await storage.put([metadataFile]);
       const metadataUrl = `https://${resData.toString()}.ipfs.dweb.link/metadata.json`;
-      let creationAction = await contract.createCollection(price, metadataUrl);
+      let creationAction = await contract.createCollection(metadataUrl);
       await creationAction.wait();
       setLoading(false);
       router.push("/collections/owned");

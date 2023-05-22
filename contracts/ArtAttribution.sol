@@ -18,10 +18,8 @@ contract ArtAttribution is ERC721URIStorage{
     struct ArtCollection {
         uint256 collectionId;
         address payable creator;
-        uint256 price;
         string collectionUri;
         uint256 totalAttributions;
-        uint256 totalRewards;
         bool exists;
     }
 
@@ -44,7 +42,7 @@ contract ArtAttribution is ERC721URIStorage{
     address payable contract_creator;
     
     event NewMember(uint256 indexed memberId,address memberAddress, string dataUri);
-    event CollectionCreated(uint256 collectionId, address indexed creator, uint256 price, string collectionUri, uint256 totalAttributions, uint256 totalRewards);
+    event CollectionCreated(uint256 collectionId, address indexed creator, string collectionUri, uint256 totalAttributions);
     event ArtworkAttributed(uint256 certificateId, address indexed owner, uint256 collectionId, string certificateUri);
 
     constructor() ERC721("Art Attribution Token", "ATTR") {
@@ -59,22 +57,19 @@ contract ArtAttribution is ERC721URIStorage{
         return newMemberId;
     }
 
-    function createCollection(uint256 _price, string memory collectionUri) external {
+    function createCollection(string memory collectionUri) external {
         collectionIdCounter.increment();
         uint256 collectionId = collectionIdCounter.current();
-        artCollections.push(ArtCollection(collectionId, payable(msg.sender), _price, collectionUri, 0, 0, true));
+        artCollections.push(ArtCollection(collectionId, payable(msg.sender), collectionUri, 0, true));
 
-        emit CollectionCreated(collectionId, msg.sender, _price, collectionUri, 0, 0);
+        emit CollectionCreated(collectionId, msg.sender,  collectionUri, 0);
     }
 
     function attributeCollection(uint256 _collectionId,string memory certificateUri) public payable {
         require(artCollections[_collectionId].exists, "Collection does not exist");
         ArtCollection storage collection = artCollections[_collectionId-1];
-        require(msg.value >= collection.price, "Insufficient contribution");
-        
 
         collection.totalAttributions += 1;
-        collection.totalRewards += msg.value;
         certificateIdCounter.increment();
         uint256 certificateId = certificateIdCounter.current();
          _mint(msg.sender,certificateId);
@@ -124,17 +119,17 @@ contract ArtAttribution is ERC721URIStorage{
         return attributionCertificates[id-1];
     }
 
-    function getOwnedCollections(address author) public view returns ( ArtCollection[] memory) {
+    function getOwnedCollections(address creator) public view returns ( ArtCollection[] memory) {
         uint256 creatorArtCollectionCount = 0;
         for (uint256 i = 0; i < artCollections.length; i++) {
-            if (artCollections[i].creator == author) {
+            if (artCollections[i].creator == creator) {
                 creatorArtCollectionCount++;
             }
         }
         ArtCollection[] memory creatorArtCollections = new ArtCollection[](creatorArtCollectionCount);
         uint256 j = 0;
         for (uint256 i = 0; i < creatorArtCollections.length; i++) {
-            if (artCollections[i].creator == author) {
+            if (artCollections[i].creator == creator) {
                 creatorArtCollections[j] = artCollections[i];
                 j++;
             }

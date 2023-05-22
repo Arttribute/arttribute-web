@@ -35,22 +35,17 @@ export default function Dashboard() {
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
         const meta = await axios.get(i.collectionUri);
-        let rewards = ethers.utils.formatUnits(
-          i.totalRewards.toString(),
-          "ether"
-        );
         console.log("metadata", meta);
         let artcollection = {
           id: i.collectionId.toNumber(),
           name: meta.data.name,
           creator: i.creator,
           metadata: i.collectionUri,
-          price: i.price.toNumber(),
+          price: meta.data.price,
           collectionFilesUri: meta.data.files,
           description: meta.data.description,
           featuredImage: meta.data.featuredImage,
           totalAttributions: i.totalAttributions.toNumber(),
-          totalRewards: rewards,
         };
         return artcollection;
       })

@@ -106,21 +106,16 @@ export default function CollectionDetails({
     console.log(data);
 
     const meta = await axios.get(data.collectionUri);
-    let rewards = ethers.utils.formatUnits(
-      data.totalRewards.toString(),
-      "ether"
-    );
     let collectionDetails = {
       id: data.collectionId.toNumber(),
       name: meta.data.name,
       creator: data.creator,
       metadata: data.collectionUri,
-      price: data.price.toNumber(),
+      price: meta.data.price,
       collectionFilesUri: meta.data.files,
       description: meta.data.description,
       featuredImage: meta.data.featuredImage,
       totalAttributions: data.totalAttributions.toNumber(),
-      totalRewards: rewards,
     };
     setCollection(collectionDetails);
   }

@@ -21,15 +21,23 @@ describe("ArtAttribution", function () {
     //Creating new Collection
     await artAttributionContract
       .connect(firstMemberAddress)
-      .createCollection(2, "URI_1");
+      .createCollection("URI_1");
 
     await artAttributionContract
       .connect(secondMemberAddress)
-      .createCollection(2, "URI_2");
+      .createCollection("URI_2");
+
+    await artAttributionContract
+      .connect(secondMemberAddress)
+      .createCollection("URI_3");
 
     await artAttributionContract
       .connect(thirdMemberAddress)
-      .createCollection(2, "URI_3");
+      .createCollection("URI_4");
+
+    await artAttributionContract
+      .connect(thirdMemberAddress)
+      .createCollection("URI_5");
 
     //Attributing a collection
     await artAttributionContract
@@ -44,17 +52,12 @@ describe("ArtAttribution", function () {
         value: ethers.utils.parseUnits("2", "ether"),
       });
 
-    //Invalid attribution request
-    //await artAttributionContract
-    //  .connect(secondMemberAddress)
-    //  .attributeCollection(1, 1, "certificate_uri");
-
     let allmembers = await artAttributionContract.fetchAllMembers();
     let allcertificates = await artAttributionContract.fetchAllCertificates();
     let allcollection = await artAttributionContract.fetchAllCollections();
     let collectionbyId = await artAttributionContract.getCollectionById(1);
     let ownedCollections = await artAttributionContract.getOwnedCollections(
-      "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+      "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"
     );
     let ownedCertificates = await artAttributionContract.getOwnedCertificates(
       "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
