@@ -81,7 +81,7 @@ export default function Dashboard() {
             direction="column"
           >
             <Typography variant="h1" sx={{ color: "#fff", fontWeight: 700 }}>
-              Arttribute.io
+              Arttribute
             </Typography>
           </Grid>
         </Box>
