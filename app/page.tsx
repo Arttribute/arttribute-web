@@ -21,8 +21,10 @@ export default function Dashboard() {
   async function loadCollections() {
     setLoading(true);
     /* create a generic provider and query new items */
-    const provider = new ethers.providers.JsonRpcProvider();
-    //"https://api.hyperspace.node.glif.io/rpc/v1"
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://api.hyperspace.node.glif.io/rpc/v1"
+    );
+
     const contract = new ethers.Contract(
       ArttributeAddress,
       ArtAttribution.abi,
