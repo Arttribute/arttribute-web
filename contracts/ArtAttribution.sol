@@ -2,10 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract ArtAttribution is ERC721URIStorage{
+contract ArtAttribution {
     
     using Counters for Counters.Counter;
 
@@ -39,14 +37,14 @@ contract ArtAttribution is ERC721URIStorage{
     Counters.Counter private collectionIdCounter;
     Counters.Counter private certificateIdCounter;
 
-    address payable contract_creator;
+    address public contract_creator;
     
     event NewMember(uint256 indexed memberId,address memberAddress, string dataUri);
     event CollectionCreated(uint256 collectionId, address indexed creator, string collectionUri, uint256 totalAttributions);
     event ArtworkAttributed(uint256 certificateId, address indexed owner, uint256 collectionId, string certificateUri);
 
-    constructor() ERC721("Art Attribution Token", "ATTR") {
-      contract_creator = payable(msg.sender);
+    constructor() public {
+      contract_creator = msg.sender;
     }
 
     function addMember(string memory dataUri)public returns (uint) {
@@ -66,16 +64,15 @@ contract ArtAttribution is ERC721URIStorage{
     }
 
     function attributeCollection(uint256 _collectionId,string memory certificateUri) public payable {
-        require(artCollections[_collectionId].exists, "Collection does not exist");
+       require(artCollections[_collectionId].exists, "Collection does not exist");
         ArtCollection storage collection = artCollections[_collectionId-1];
+        payable(collection.creator).transfer(msg.value);
 
         collection.totalAttributions += 1;
         certificateIdCounter.increment();
         uint256 certificateId = certificateIdCounter.current();
-         _mint(msg.sender,certificateId);
-        _setTokenURI(certificateId, certificateUri);
         attributionCertificates.push(AttributionCertificate(certificateId, msg.sender, _collectionId, certificateUri, true));
-        payable(collection.creator).transfer(msg.value);
+
         emit ArtworkAttributed(certificateId, msg.sender, _collectionId, certificateUri);
     }
 

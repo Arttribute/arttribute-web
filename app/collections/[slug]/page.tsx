@@ -79,7 +79,7 @@ export default function CollectionDetails({
         <DrawerHeader />
         <Grid container spacing={2} sx={{ m: 1 }}>
           <Grid item xs={12} md={3}>
-            {imageFiles.featuredImage ? (
+            {collection.featuredImage ? (
               <CardMedia
                 component="img"
                 height="300"
@@ -150,7 +150,7 @@ export default function CollectionDetails({
 
               <Box sx={{ mt: 3, m: 1 }}>
                 <AttributeArt
-                  id={id}
+                  id={collection.id}
                   price={collection.price}
                   collectionName={collection.name}
                   featuredImage={collection.featuredImage}
