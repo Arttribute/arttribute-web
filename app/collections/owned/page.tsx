@@ -53,6 +53,7 @@ export default function OwnedCollections() {
           metadata: i.collectionUri,
           price: meta.data.price,
           collectionFilesUri: meta.data.files,
+          contributor: i.contributor,
           description: meta.data.description,
           featuredImage: meta.data.featuredImage,
           totalAttributions: i.totalAttributions.toNumber(),
@@ -79,19 +80,32 @@ export default function OwnedCollections() {
           <StatBox
             text="Total collections"
             icon={<FilterNoneOutlinedIcon />}
-            value={5}
+            value={collections.length}
             bgcolor="#e3f2fd"
           />
           <StatBox
             text="Total earnings"
             icon={<TollIcon />}
-            value={100}
+            value={collections.reduce(
+              (
+                accumulator: any,
+                object: { totalAttributions: number; price: number }
+              ) => {
+                return accumulator + object.totalAttributions * object.price;
+              },
+              0
+            )}
             bgcolor="#e0f2f1"
           />
           <StatBox
             text="Models trained on"
             icon={<ModelTrainingIcon />}
-            value={10}
+            value={collections.reduce(
+              (accumulator: any, object: { totalAttributions: number }) => {
+                return accumulator + object.totalAttributions;
+              },
+              0
+            )}
             bgcolor="#ede7f6"
           />
         </Grid>
