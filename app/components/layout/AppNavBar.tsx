@@ -167,7 +167,7 @@ export default function AppNavBar() {
             sx={{ textTransform: "none", borderRadius: 1, width: 150 }}
             onClick={handleWalletConnect}
           >
-            {walletConnected ? (
+            {!walletConnected ? (
               loadingConnect ? (
                 <CircularProgress size={20} sx={{ color: "#fff" }} />
               ) : (
