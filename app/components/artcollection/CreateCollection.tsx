@@ -125,36 +125,38 @@ export default function CreateCollection(props: Props) {
       signer
     );
     try {
-      let storedFiles = [];
-      for (let i = 0; i < files.length; i++) {
-        const imagefile = files[i];
-        const storedFile = await storage.put([imagefile]);
-        const fileUrl = `https://${storedFile.toString()}.ipfs.dweb.link/${
-          imagefile.name
-        }`;
-        storedFiles.push(fileUrl);
-      }
+      if (image) {
+        let storedFiles = [];
+        for (let i = 0; i < files.length; i++) {
+          const imagefile = files[i];
+          const storedFile = await storage.put([imagefile]);
+          const fileUrl = `https://${storedFile.toString()}.ipfs.dweb.link/${
+            imagefile.name
+          }`;
+          storedFiles.push(fileUrl);
+        }
 
-      const imageFile = new File([image], "featured-image");
-      const storedImage = await storage.put([imageFile]);
-      const imageUrl = `https://${storedImage.toString()}.ipfs.dweb.link/featured-image`;
-      const priceToString = price.toString();
-      const metadata = JSON.stringify({
-        name: name,
-        price: priceToString,
-        description: description,
-        featuredImage: imageUrl,
-        files: storedFiles,
-      });
-      const datablob = new Blob([metadata], { type: "application/json" });
-      const metadataFile = new File([datablob], "metadata.json");
-      const resData = await storage.put([metadataFile]);
-      const metadataUrl = `https://${resData.toString()}.ipfs.dweb.link/metadata.json`;
-      let creationAction = await contract.createCollection(metadataUrl);
-      await creationAction.wait();
-      setLoading(false);
-      router.push("/collections/owned");
-      handleClose();
+        const imageFile = new File([image], "featured-image");
+        const storedImage = await storage.put([imageFile]);
+        const imageUrl = `https://${storedImage.toString()}.ipfs.dweb.link/featured-image`;
+        const priceToString = price.toString();
+        const metadata = JSON.stringify({
+          name: name,
+          price: priceToString,
+          description: description,
+          featuredImage: imageUrl,
+          files: storedFiles,
+        });
+        const datablob = new Blob([metadata], { type: "application/json" });
+        const metadataFile = new File([datablob], "metadata.json");
+        const resData = await storage.put([metadataFile]);
+        const metadataUrl = `https://${resData.toString()}.ipfs.dweb.link/metadata.json`;
+        let creationAction = await contract.createCollection(metadataUrl);
+        await creationAction.wait();
+        setLoading(false);
+        router.push("/collections/owned");
+        handleClose();
+      }
     } catch (error) {
       console.log("Error uploading content: ", error);
     }
