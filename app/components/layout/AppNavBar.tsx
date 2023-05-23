@@ -1,6 +1,9 @@
 import * as React from "react";
 import Link from "next/link";
 
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,6 +11,7 @@ import Grid from "@mui/material/Grid";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import { CircularProgress } from "@mui/material";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -92,6 +96,8 @@ const Drawer = styled(MuiDrawer, {
 export default function AppNavBar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [loadingConnect, setLoadingConnect] = React.useState(false);
+  const [walletConnected, setWalletConnected] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -99,6 +105,19 @@ export default function AppNavBar() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleWalletConnect = async () => {
+    setLoadingConnect(true);
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    console.log("Wallet connect");
+    console.log("Address: ", address);
+    setWalletConnected(true);
+    setLoadingConnect(false);
   };
 
   return (
@@ -142,6 +161,22 @@ export default function AppNavBar() {
           >
             Arttribute
           </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button
+            variant="contained"
+            sx={{ textTransform: "none", borderRadius: 1, width: 150 }}
+            onClick={handleWalletConnect}
+          >
+            {walletConnected ? (
+              loadingConnect ? (
+                <CircularProgress size={20} sx={{ color: "#fff" }} />
+              ) : (
+                "Connect wallet"
+              )
+            ) : (
+              "Connected"
+            )}
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
