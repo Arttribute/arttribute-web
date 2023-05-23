@@ -15,6 +15,7 @@ import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 
 interface Props {
   data: {
+    id: string;
     name: string;
     totalAttributions: number;
     totalArtworks: number;
