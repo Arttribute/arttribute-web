@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
-
+import TollOutlinedIcon from "@mui/icons-material/TollOutlined";
 interface Props {
   data: {
     id: number;
@@ -66,7 +66,7 @@ export default function ArtCollectionCard(props: Props) {
           <Grid container>
             <Grid item xs={7}>
               <Box sx={{ display: "flex" }}>
-                <Avatar sx={{ width: 24, height: 24 }} />
+                <TollOutlinedIcon />
 
                 <Typography
                   variant="caption"
@@ -74,7 +74,7 @@ export default function ArtCollectionCard(props: Props) {
                   noWrap
                   sx={{ m: 0.5 }}
                 >
-                  Artist Name
+                  {data.price}
                 </Typography>
               </Box>
             </Grid>

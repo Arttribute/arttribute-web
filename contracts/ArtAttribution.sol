@@ -63,8 +63,8 @@ contract ArtAttribution {
         emit CollectionCreated(collectionId, msg.sender,  collectionUri, 0);
     }
 
-    function attributeCollection(uint256 _collectionId,string memory certificateUri) public payable {
-       require(artCollections[_collectionId].exists, "Collection does not exist");
+    function getAttributionCertificate(uint256 _collectionId,string memory certificateUri) public payable {
+       require(artCollections[_collectionId-1].exists, "Collection does not exist");
         ArtCollection storage collection = artCollections[_collectionId-1];
         payable(collection.creator).transfer(msg.value);
 
@@ -78,13 +78,13 @@ contract ArtAttribution {
 
 
     function getCertificateOwner(uint256 _certificateId) external view returns (address) {
-        require(attributionCertificates[_certificateId].exists, "Certificate does not exist");
+        require(attributionCertificates[_certificateId-1].exists, "Certificate does not exist");
 
         return attributionCertificates[_certificateId].owner;
     }
 
     function getCertificateCollection(uint256 _certificateId) external view returns (uint256) {
-        require(attributionCertificates[_certificateId].exists, "Certificate does not exist");
+        require(attributionCertificates[_certificateId-1].exists, "Certificate does not exist");
 
         return attributionCertificates[_certificateId].collectionId;
     }

@@ -172,15 +172,15 @@ export default function CollectionDetails({
 
             <ImageList
               sx={{ width: "90%", height: 500, m: 3, borderRadius: 3 }}
-              cols={4}
+              cols={3}
               rowHeight={164}
             >
               {imageFiles?.length > 0 &&
                 imageFiles.map((image: string) => (
                   <ImageListItem key={image}>
                     <img
-                      src={image}
-                      srcSet={image}
+                      src={`${image}?w=164&h=164&fit=crop&auto=format`}
+                      srcSet={`${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                       alt={image}
                       loading="lazy"
                     />

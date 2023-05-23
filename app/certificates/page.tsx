@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import Web3Modal from "web3modal";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Box, Grid, LinearProgress, Typography } from "@mui/material";
@@ -23,10 +24,9 @@ export default function OwnedCollections() {
   async function loadCertificates() {
     setLoading(true);
     /* create a generic provider and query new items */
-    const provider = new ethers.providers.JsonRpcProvider(
-      "https://api.hyperspace.node.glif.io/rpc/v1"
-    );
-    //"https://api.hyperspace.node.glif.io/rpc/v1"
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
     const contract = new ethers.Contract(
       ArttributeAddress,
       ArtAttribution.abi,
@@ -34,7 +34,7 @@ export default function OwnedCollections() {
     );
 
     const signer = provider.getSigner();
-    const address = await (await signer.getAddress()).toString();
+    const address = await signer.getAddress();
     const data = await contract.getOwnedCertificates(address);
 
     /*  map over items returned from smart contract and format them */

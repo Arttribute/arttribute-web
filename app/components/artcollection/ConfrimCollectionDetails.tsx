@@ -30,10 +30,10 @@ export default function ConfirmCollectionDetails(props: Props) {
           Collection price:
         </Typography>
         <Typography variant="subtitle1" sx={{ m: 1, fontWeight: 700 }}>
-          Description:
+          Total images:
         </Typography>
         <Typography variant="subtitle1" sx={{ m: 1, fontWeight: 700 }}>
-          Total images:
+          Description:
         </Typography>
       </Grid>
       <Grid item xs={7} lg={8}>
@@ -43,11 +43,12 @@ export default function ConfirmCollectionDetails(props: Props) {
         <Typography variant="subtitle1" sx={{ m: 1 }}>
           {price} +
         </Typography>
-        <Typography variant="subtitle1" sx={{ m: 1 }}>
-          {description}
-        </Typography>
+
         <Typography variant="subtitle1" sx={{ m: 1 }}>
           {totalFiles}
+        </Typography>
+        <Typography variant="subtitle1" sx={{ m: 1 }}>
+          {description}
         </Typography>
       </Grid>
     </Grid>

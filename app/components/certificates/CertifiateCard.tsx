@@ -12,6 +12,7 @@ import {
 
 import SummarizeOutlinedIcon from "@mui/icons-material/SummarizeOutlined";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
+import TollIcon from "@mui/icons-material/Toll";
 
 interface Props {
   data: {
@@ -83,17 +84,14 @@ export default function CertificateCard(props: Props) {
                 <Typography variant="body1" component="div" gutterBottom noWrap>
                   {data.collectionName}
                 </Typography>
-                <Box sx={{ display: "flex" }}>
-                  <Avatar sx={{ width: 24, height: 24 }} />
-
-                  <Typography
-                    variant="caption"
-                    component="div"
-                    noWrap
-                    sx={{ m: 0.5 }}
-                  >
-                    Artist Name
+                <Box sx={{ m: 1 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                    Contribution
                   </Typography>
+                  <Box sx={{ display: "flex" }}>
+                    <TollIcon sx={{ mr: 1 }} />
+                    <Typography variant="body1">{data.contribution}</Typography>
+                  </Box>
                 </Box>
               </Box>
             </Box>

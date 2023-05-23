@@ -42,13 +42,13 @@ describe("ArtAttribution", function () {
     //Attributing a collection
     await artAttributionContract
       .connect(thirdMemberAddress)
-      .attributeCollection(1, "certificate_uri", {
+      .getAttributionCertificate(1, "certificate_uri", {
         value: ethers.utils.parseUnits("4", "ether"),
       });
 
     await artAttributionContract
       .connect(thirdMemberAddress)
-      .attributeCollection(1, "certificate_uri", {
+      .getAttributionCertificate(1, "certificate_uri", {
         value: ethers.utils.parseUnits("2", "ether"),
       });
 

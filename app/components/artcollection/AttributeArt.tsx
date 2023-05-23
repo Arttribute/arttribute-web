@@ -81,10 +81,13 @@ export default function AttributeArt(props: Props) {
       const metadataFile = new File([datablob], "metadata.json");
       const resData = await storage.put([metadataFile]);
       const metadataUrl = `https://${resData.toString()}.ipfs.dweb.link/metadata.json`;
-      let attributionAction = await contract.attributeCollection(
+      const contribution = priceToPay.toString();
+      let attributionAction = await contract.getAttributionCertificate(
         id,
         metadataUrl,
-        { value: ethers.utils.parseEther(priceToPay.toString()) }
+        {
+          value: ethers.utils.parseUnits(contribution, "ether"),
+        }
       );
       await attributionAction.wait();
       setLoading(false);
@@ -120,7 +123,7 @@ export default function AttributeArt(props: Props) {
             placeholder={`${price} +`}
             value={priceToPay}
             onChange={handlePriceChange}
-            helperText={`Contributing at least ${price} +`}
+            helperText={`Contribute at least ${price} +`}
           />
           <TextField
             margin="dense"
