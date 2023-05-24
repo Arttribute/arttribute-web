@@ -53,6 +53,8 @@ yarn dev
 pnpm dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
 ## What's next for Arttribute
 
 The aim is to expand the platform's reach by attracting a diverse community of artists and AI practitioners and to continue to enhance the user experience, incorporating feedback and implementing new features to make Arttribute even more intuitive and versatile.
