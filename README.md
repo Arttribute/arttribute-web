@@ -4,6 +4,10 @@ Arttribute aims to empower artists while enabling AI practitioners and enthusias
 The platform allows artists to create art collections and set a price for their usage in training generative AI models. When someone pays to use an artwork collection to train a model, they receive a unique attribution certificate, acknowledging the artist's contribution. The platform ensures that artwork ownership remains with the artist, allowing multiple attributions for the same collection.
 With this, artists retain control, and AI practitioners gain undeniable proof of attribution.
 
+### Team
+
+Baranaba Mugabane, **Github:** https://github.com/bashybaranaba **Email:** bashybaranaba@gmail.com
+
 ### Technoloogiese used
 
 The platform was built using **Next.js**, a popular React framework for server-side rendering and building web applications which allows for fast creation, and an efficient and interactive user interface. for Attribute.
