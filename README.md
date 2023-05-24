@@ -1,8 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Arttribute
 
-## Getting Started
+Arttribute aims to empower artists while enabling AI practitioners and enthusiasts to use their artwork for generative AI models in an ethical manner.
+The platform allows artists to create art collections and set a price for their usage in training generative AI models. When someone pays to use an artwork collection to train a model, they receive a unique attribution certificate, acknowledging the artist's contribution. The platform ensures that artwork ownership remains with the artist, allowing multiple attributions for the same collection.
+With this, artists retain control, and AI practitioners gain undeniable proof of attribution.
 
-First, run the development server:
+### Technoloogiese used
+
+The platform was built using **Next.js**, a popular React framework for server-side rendering and building web applications which allows for fast creation, and an efficient and interactive user interface. for Attribute.
+For smart contract development and blockchain integration, **Solidity** was used for writing the smart contract, and **Hardhat**, a development environment for Ethereum, compile, test, and deploy the smart contract.
+**Web3Storage** has been used to store the files uploaded to the platform and the smart contract is deployed on the Filecoin Hyperspace testnet.
+
+### Deployed on
+
+**Web Url: ** https://arttribute.vercel.app/
+**Deployed smart contract adddress:** 0xcb0A9835CDf63c84FE80Fcc59d91d7505871c98B
+
+## Running it locally
+
+First, install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+Test the contract
+
+```bash
+npx hardhat test
+```
+
+Start a local node
+
+```bash
+npx hardhat node
+```
+
+Deploy the contract locally:
+
+```bash
+npx hardhat run --network localhost scripts/deploy.ts
+```
+
+Run the development server for next js:
 
 ```bash
 npm run dev
@@ -12,23 +53,6 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What's next for Arttribute
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The aim is to expand the platform's reach by attracting a diverse community of artists and AI practitioners and to continue to enhance the user experience, incorporating feedback and implementing new features to make Arttribute even more intuitive and versatile.
