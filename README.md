@@ -16,7 +16,7 @@ For smart contract development and blockchain integration, **Solidity** was used
 
 **Deployed smart contract adddress:** 0xcb0A9835CDf63c84FE80Fcc59d91d7505871c98B
 
-## Running it locally
+### Running it locally
 
 First, install dependencies
 
