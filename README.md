@@ -12,7 +12,8 @@ For smart contract development and blockchain integration, **Solidity** was used
 
 ### Deployed on
 
-**Web Url: ** https://arttribute.vercel.app/
+**Web Url:** https://arttribute.vercel.app/
+
 **Deployed smart contract adddress:** 0xcb0A9835CDf63c84FE80Fcc59d91d7505871c98B
 
 ## Running it locally
