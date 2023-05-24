@@ -8,7 +8,7 @@ With this, artists retain control, and AI practitioners gain undeniable proof of
 
 Baranaba Mugabane, **Github:** https://github.com/bashybaranaba **Email:** bashybaranaba@gmail.com
 
-### Technoloogiese used
+## Technoloogiese used
 
 The platform was built using **Next.js**, a popular React framework for server-side rendering and building web applications which allows for fast creation, and an efficient and interactive user interface. for Attribute.
 For smart contract development and blockchain integration, **Solidity** was used for writing the smart contract, and **Hardhat**, a development environment for Ethereum, compile, test, and deploy the smart contract.
