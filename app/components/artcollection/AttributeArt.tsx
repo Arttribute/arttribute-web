@@ -17,6 +17,7 @@ import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 
 import { ArttributeAddress } from "../../../config.js";
 import ArtAttribution from "../../../ArtAttribution.json";
+import { Typography } from "@mui/material";
 
 interface Props {
   id: number;
@@ -112,6 +113,11 @@ export default function AttributeArt(props: Props) {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Use and attribute art Collection</DialogTitle>
         <DialogContent>
+          {priceToPay < price && (
+            <Typography variant="caption" color="error" sx={{ mb: 1 }}>
+              You must contribute at least {price}
+            </Typography>
+          )}
           <TextField
             autoFocus
             margin="dense"
@@ -125,6 +131,7 @@ export default function AttributeArt(props: Props) {
             onChange={handlePriceChange}
             helperText={`Contribute at least ${price} +`}
           />
+
           <TextField
             margin="dense"
             id="name"
@@ -142,6 +149,7 @@ export default function AttributeArt(props: Props) {
             variant="contained"
             sx={{ textTransform: "none", mt: 2 }}
             onClick={handleAttribution}
+            disabled={!priceToPay || priceToPay < price || !name}
           >
             {loading ? (
               <CircularProgress size={25} sx={{ color: "#fff" }} />
