@@ -145,7 +145,7 @@ export default function CollectionDetails({
                 </Grid>
                 <Grid item xs={4} lg={4}>
                   <Typography variant="body1" sx={{ fontWeight: 700, m: 1 }}>
-                    100
+                    {imageFiles?.length}
                   </Typography>
                 </Grid>
               </Grid>
