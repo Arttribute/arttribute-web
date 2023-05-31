@@ -12,13 +12,15 @@ Baranaba Mugabane, **Github:** https://github.com/bashybaranaba **Email:** bashy
 
 The platform was built using **Next.js**, a popular React framework for server-side rendering and building web applications which allows for fast creation, and an efficient and interactive user interface. for Attribute.
 For smart contract development and blockchain integration, **Solidity** was used for writing the smart contract, and **Hardhat**, a development environment for Ethereum, compile, test, and deploy the smart contract.
-**Web3Storage** has been used to store the files uploaded to the platform and the smart contract is deployed on the Filecoin Hyperspace testnet.
+**Web3Storage** has been used to store the files uploaded to the platform and the smart contract is deployed on the Filecoin Calibration testnet.
 
 ### Deployed on
 
 **Web Url:** https://arttribute.vercel.app/
 
-**Deployed smart contract adddress:** 0xcb0A9835CDf63c84FE80Fcc59d91d7505871c98B
+**Deployed smart contract adddress (Hyperspace):** 0xcb0A9835CDf63c84FE80Fcc59d91d7505871c98B
+
+**Deployed smart contract adddress (Calibration):** 0xBF3BEd82587e9af532B0E7dc6153c24Bb680c5CB
 
 ### Running it locally
 
