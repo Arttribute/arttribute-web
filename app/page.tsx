@@ -36,7 +36,7 @@ export default function Dashboard() {
 
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
-        const meta = await axios.get(i.collectionUri).then((res) => res.data);
+        const meta = await fetch(i.collectionUri).then((res) => res.json());
         console.log("metadata", meta);
         let artcollection = {
           id: i.collectionId.toNumber(),
