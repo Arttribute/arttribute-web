@@ -22,7 +22,7 @@ export default function Dashboard() {
     setLoading(true);
     /* create a generic provider and query new items */
     const provider = new ethers.providers.JsonRpcProvider(
-      "https://api.hyperspace.node.glif.io/rpc/v1"
+      "https://api.calibration.node.glif.io/rpc/v1"
     );
 
     const contract = new ethers.Contract(
@@ -36,17 +36,17 @@ export default function Dashboard() {
 
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
-        const meta = await axios.get(i.collectionUri);
+        const meta = await axios.get(i.collectionUri).then((res) => res.data);
         console.log("metadata", meta);
         let artcollection = {
           id: i.collectionId.toNumber(),
-          name: meta.data.name,
+          name: meta.name,
           creator: i.creator,
           metadata: i.collectionUri,
-          price: meta.data.price,
-          collectionFilesUri: meta.data.files,
-          description: meta.data.description,
-          featuredImage: meta.data.featuredImage,
+          price: meta.price,
+          collectionFilesUri: meta.files,
+          description: meta.description,
+          featuredImage: meta.featuredImage,
           totalAttributions: i.totalAttributions.toNumber(),
         };
         return artcollection;

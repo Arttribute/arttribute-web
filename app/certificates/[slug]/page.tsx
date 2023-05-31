@@ -34,7 +34,9 @@ export default function CertificateDetails({
   async function loadCertificate() {
     setLoading(true);
     /* create a generic provider and query new items */
-    const provider = new ethers.providers.JsonRpcProvider("https://api.hyperspace.node.glif.io/rpc/v1");
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://api.calibration.node.glif.io/rpc/v1"
+    );
 
     const contract = new ethers.Contract(
       ArttributeAddress,
@@ -44,16 +46,16 @@ export default function CertificateDetails({
     const data = await contract.getCertificateById(id);
     console.log(data);
 
-    const meta = await axios.get(data.certificateUri);
+    const meta = await fetch(data.certificateUri).then((res) => res.json());
     let certificateDetails = {
       id: data.certificateId.toNumber(),
       ownerAddress: data.owner,
-      name: meta.data.ownerName,
+      name: meta.ownerName,
       metadata: data.certificateUri,
       collectionId: data.collectionId.toNumber(),
-      collectionName: meta.data.collectionName,
-      featuredImage: meta.data.featuredImage,
-      contribution: meta.data.contribution,
+      collectionName: meta.collectionName,
+      featuredImage: meta.featuredImage,
+      contribution: meta.contribution,
     };
     setCertificate(certificateDetails);
   }

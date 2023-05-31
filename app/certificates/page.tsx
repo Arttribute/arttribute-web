@@ -40,17 +40,17 @@ export default function OwnedCollections() {
     /*  map over items returned from smart contract and format them */
     const ownedCertificates: any[] = await Promise.all(
       data.map(async (i: any) => {
-        const meta = await axios.get(i.certificateUri);
+        const meta = await fetch(i.certificateUri).then((res) => res.json());
         console.log("metadata", meta);
         let ownedCertificate = {
           id: i.certificateId.toNumber(),
           ownerAddress: i.owner,
-          name: meta.data.ownerName,
+          name: meta.ownerName,
           metadata: i.certificateUri,
           collectionId: i.collectionId.toNumber(),
-          collectionName: meta.data.collectionName,
-          featuredImage: meta.data.featuredImage,
-          contribution: meta.data.contribution,
+          collectionName: meta.collectionName,
+          featuredImage: meta.featuredImage,
+          contribution: meta.contribution,
         };
         return ownedCertificate;
       })

@@ -8,6 +8,7 @@ import {
   CardMedia,
   Grid,
   Typography,
+  Tooltip,
   CardActionArea,
 } from "@mui/material";
 
@@ -80,7 +81,9 @@ export default function ArtCollectionCard(props: Props) {
             </Grid>
             <Grid item xs={5}>
               <Box sx={{ display: "flex" }}>
-                <ModelTrainingIcon sx={{ ml: 4 }} />
+                <Tooltip title="Models trained on">
+                  <ModelTrainingIcon sx={{ ml: 4 }} />
+                </Tooltip>
                 <Typography
                   variant="caption"
                   component="div"

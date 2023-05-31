@@ -1,3 +1,4 @@
-export const ArttributeAddress = "0xcb0A9835CDf63c84FE80Fcc59d91d7505871c98B";
+export const ArttributeAddress = "0xBF3BEd82587e9af532B0E7dc6153c24Bb680c5CB";
 //0x9852795dbb01913439f534b4984fBf74aC8AfA12 -deployed1
 //0xcb0A9835CDf63c84FE80Fcc59d91d7505871c98B -deployed2
+//0xBF3BEd82587e9af532B0E7dc6153c24Bb680c5CB -deployed3

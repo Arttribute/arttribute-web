@@ -44,18 +44,18 @@ export default function OwnedCollections() {
     /*  map over items returned from smart contract and format then */
     const artcollections: any[] = await Promise.all(
       data.map(async (i: any) => {
-        const meta = await axios.get(i.collectionUri);
+        const meta = await fetch(i.collectionUri).then((res) => res.json());
         console.log("metadata", meta);
         let artcollection = {
           id: i.collectionId.toNumber(),
-          name: meta.data.name,
+          name: meta.name,
           creator: i.creator,
           metadata: i.collectionUri,
-          price: meta.data.price,
-          collectionFilesUri: meta.data.files,
+          price: meta.price,
+          collectionFilesUri: meta.files,
           contributor: i.contributor,
-          description: meta.data.description,
-          featuredImage: meta.data.featuredImage,
+          description: meta.description,
+          featuredImage: meta.featuredImage,
           totalAttributions: i.totalAttributions.toNumber(),
         };
         return artcollection;
